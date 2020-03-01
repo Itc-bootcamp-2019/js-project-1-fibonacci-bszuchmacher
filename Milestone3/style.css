@@ -1,0 +1,18 @@
+  body{
+    height:100vh;
+    background-color: teal;
+}
+
+.box{
+    background-color:blanchedalmond;
+    width:30%;
+    height:30%;
+    border-radius: 2%;
+    box-shadow: 5px 10px #00000010;
+}
+
+.parent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
