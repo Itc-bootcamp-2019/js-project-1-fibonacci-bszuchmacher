@@ -1,21 +1,23 @@
-function fibo(x) {
-	let first = 0;
-	let second = 1;
-	let y = 0;
+let text = document.getElementById("answer");
 
-	for (let i = 2; i <= x ; i++ ) {
-		y = first + second;
-		first = second;
-		second = y;
-	}
-	return y;
-	
+function fib(num) {
+  if (num === 0 || num === 1) {
+    return num;
+  } else {
+    return fib(num - 2) + fib(num - 1);
+  }
 }
 
-calcButton.addEventListener("click", () => {
-	let x = document.getElementById("x").value;
-	let y = fibo(x);
-
-	const docY = document.getElementById("y");
-	docY.innerText = y;
-});
+function buttonClicked() {
+  let http = new XMLHttpRequest();
+  const url = "http://localhost:5050/fibonacci/" + document.getElementById("question").value;
+  http.open("GET", url, true);
+  http.onreadystatechange = function() {
+    if (http.readyState == 4 && http.status == 200) {
+      let f = http.responseText;
+      const a = JSON.parse(f).result;
+      text.innerText = a;
+    }
+  };
+  http.send();
+}
