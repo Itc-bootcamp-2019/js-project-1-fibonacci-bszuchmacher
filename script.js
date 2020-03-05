@@ -4,7 +4,7 @@ button.addEventListener("click", getYFromServer);
 
 
 function getYFromServer() {
-  // Remove alerts, y num, etc. from any previous runs of the function
+  // Main functioning... y(input is defined)
   hideAlert();
   document.getElementById("y").innerText = "";
   document.getElementById("fortytooproblem").innerText = "";
@@ -27,25 +27,35 @@ function getYFromServer() {
   } else {
     fetch("http://localhost:5050/fibonacci/" + fibonacciX)
       .then(response => {
-        // Display error if get back 400 from server (num 42 case)
+        // #42 is passed, if compared, it comes back as 400 error, and  Text. Otherwise, we return it as an Object.
         if (response.status === 400) {
-          console.log("40");
           hideSpinner();
-          document.getElementById("fortytooproblem").innerText =
-            "Server Error: 42 is the meaning of life";
+          console.log("text");
+          return response.text();
         } else {
+          console.log("json");
           return response.json();
         }
       })
       .then(data => {
-        console.log(data);
-        let y = data.result;
-        hideSpinner();
-        document.getElementById("y").innerText = y;
+        // If the data passed back is acceptable (not 42 or over 50, the fib is displayed....
+        //if not, the display becomes red and presents an error message!)
+
+        if (typeof data === "object" && data !== null) {
+          let y = data.result;
+          hideSpinner();
+          document.getElementById("y").innerText = y;
+          console.log("JSON");
+        } else {
+          console.log(data);
+          hideSpinner();
+          document.getElementById("fortytooproblem").innerText =
+            "Server Error: " + data;
+          console.log("TEXT");
+        }
       });
   }
 }
-
 // Show the spinner during API request
 function showSpinner() {
   const spinner = document.getElementById("spinner");
@@ -66,7 +76,7 @@ function showAlert() {
   const alert = document.getElementById("alert");
   alert.className = "alert alert danger show";
   const inputField = document.getElementById("inputField");
-  inputField.className = "formchange.red";
+  inputField.className = "formchange-red";
 }
 
 // Hide alert
@@ -76,3 +86,4 @@ function hideAlert() {
   const inputField = document.getElementById("inputField");
   inputField.className = "formchange";
 }
+
