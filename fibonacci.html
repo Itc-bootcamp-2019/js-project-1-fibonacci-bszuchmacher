@@ -3,20 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Fibby!</title>
+    <title>My Fibby</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body>
+  <body onload="pastResults()">
     <h1>Fibonacci Calculator</h1>
     <div class="main-content">
-      <span id="server-message">
+      <span>
         The Fibonacci Of
       </span>
       <input
@@ -24,20 +23,22 @@
         class="formchange"
         type="text"
         placeholder="#"
-        add-label="Search"
+        aria-label="Search"
       />
       <button id="button" class="btn btn-primary">
         IS
       </button>
       <span id="y"></span>
-    <span id="fortytooproblem"></span>
-  </div>
-  <div id="alert" class="alert alert-danger" role="alert"></div>
-  <div class="row resultsTimeline">
-    <div class="resultsHistoryHeading">Results</div>
-  <div id="spinner"></div>
-    </span>
-</div>
+      <div id="spinner"></div>
+      <span id="fortytooproblem"></span>
+    </div>
+    <div id="alert" class="alert alert-danger" role="alert"></div>
+    <div class="results-header">
+      <h2>Results</h2>
+      <div id="spinner-results"></div>
+    </div>
+    <div id="test"></div>
+    <ul id="results"></ul>
     <script src="script.js"></script>
   </body>
 </html>

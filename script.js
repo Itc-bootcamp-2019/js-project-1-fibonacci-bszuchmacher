@@ -1,4 +1,29 @@
 //Now we start the fun!!!!!
+
+  
+// Displays previous results from server.
+function pastResults() {
+  fetch("http://localhost:5050/getFibonacciResults")
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+      let previousLists = [];
+      for (let i = 0; i < data.results.length; i++) {
+        // Creates the tag line for every result printed.
+        let date = new Date(data.results[i].createdDate).toString();
+        previousLists.push(
+          `The fibonacci Of <span class="bold">${data.results[i].number}</span> is <span class="bold">${data.results[i].result}</span>. Calculated at: ${date}`
+        );
+        // Puts each sentence into an <li> in the HTML
+        let resultsSection = document.getElementById("results"); 
+        let newLi = document.createElement("li");
+        newLi.innerHTML = previousLists[i];
+        resultsSection.appendChild(newLi);
+      }
+    });
+}
+
 let button = document.getElementById("button");
 button.addEventListener("click", getYFromServer);
 
