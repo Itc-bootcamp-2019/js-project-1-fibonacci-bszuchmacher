@@ -1,83 +1,92 @@
-.parent {
-	display: flex;
-  }
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+body {
+  padding-top: 75px;
+  padding-left: 150px;
+  font-family: "Open Sans", sans-serif;
+}
+span,
+p {
+  font-size: 24px;
+  margin-right: 10px;
   
+}
+h1 {
+  font-size: 72px;
+  margin-bottom: 40px;
+}
+.main-content {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+.formchange {
+  margin-left: 20px;
+  margin-right: 20px;
+  width: 90px;
+}
+#button {
+  background-color: #0275d8;
+  height: 40px;
+  font-size: 16px;
+  text-align: center;
   
-  .column {
-	flex-direction: column;
+}
+#y {
+  font-weight: bold;
+  text-decoration: underline;
+  margin-left: 15px;
+}
+.formchange.red {
+  color: #d9534f;
+  border: 1px solid #d9534f;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* Loading spinner */
+
+#spinner {
+  visibility: hidden;
+  border: 5px solid transparent; /* Light grey */
+  border-top: 5px solid black; /* Blue */
+  border-bottom: 5px solid black; /* Blue */
+  border-right: 5px solid black; /* Blue */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+}
+#spinner.show {
+  visibility: visible;
+  margin-left: 5px;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  
-  body {
-	height: 100vh;
-	padding-left: 150px;
-	padding-top: 50px;
-	justify-content: left;
-	align-items: top;
-	display: flex;
+  100% {
+    transform: rotate(360deg);
   }
-  
-  .box {
-	width: auto;
-	height: 30%;
-	justify-content: center;
-	align-items: center;
-	justify-content: space-evenly;
-  }
-  
-  h1 {
-	font-style: normal;
-	font-weight: normal;
-	font-size: 72px;
-	line-height: 79px;
-	color: #373a3c;
-	margin: 0;
-  }
-  
-  h4 {
-	font-weight: 400;
-	margin: 0;
-	text-decoration: underline;
-	margin-left: 5%;
-  }
-  
-  .subtitle {
-	width: 95%;
-	justify-content: left;
-  }
-  
-  .subtitle .box {
-	align-items: center;
-	justify-content: left;
-	width: 90%;
-	height: 100%;
-  }
-  
-  .subtitle .box form input {
-	width: 30%;
-	border-radius: 10%;
-	border: 0.5px solid black;
-	margin-left: 5%;
-  }
-  
-  form {
-	width: 65%;
-	justify-content: space-evenly;
-	font-size: x-large;
-  }
-  
-  button {
-	background: #0275d8;
-	border: none;
-	box-sizing: border-box;
-	border-radius: 4px;
-	font-style: normal;
-	font-weight: normal;
-	font-size: 16px;
-	line-height: 21px;
-	height: 100%;
-	text-align: center;
-	padding-left: 3.5%;
-	padding-right: 3.5%;
-	
-	color: #ffffff;
-  }
+}
+
+/*  Alert message */
+#alert {
+  visibility: hidden;
+  width: 220px;
+  margin-top: 10px;
+  margin-left: 67px;
+  text-align: center;
+}
+
+#alert.show {
+  visibility: visible;
+  background-color: #d9534f;
+
+}
+
+/*  Alert message for number 42 */
+#fortytooproblem {
+  color: #d9534f;
+  font-size: 16px;
+  margin-left: -40px;
+}
