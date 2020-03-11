@@ -3,42 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Fibby</title>
+    <title>My Fibby!!</title>
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"
     />
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
     <link rel="stylesheet" href="style.css" />
   </head>
-  <body onload="pastResults()">
+  <body>
     <h1>Fibonacci Calculator</h1>
-    <div class="main-content">
+   
+    <div class="calculator">
       <span>
         The Fibonacci Of
       </span>
       <input
         id="inputField"
-        class="formchange"
+        class="formcontrol"
         type="text"
         placeholder="#"
         aria-label="Search"
       />
-      <button id="button" class="btn btn-primary">
+      <button id="calcFibby" class="btn btn-primary">
         IS
       </button>
-      <span id="y"></span>
-      <div id="spinner"></div>
-      <span id="fortytooproblem"></span>
+      <span id="y" class="y"></span>
+      <span id="fortytooerror"></span>
     </div>
-    <div id="alert" class="alert alert-danger" role="alert"></div>
+    
+    <div class="save-calculation">
+      <input type="checkbox" class="form-check-input" id="checkBox" />
+      <span class="checkbox-text">Save Calculation</span>
+      <div id="alert" class="alert alert-danger" role="alert"></div>
+    </div>
+    
     <div class="results-header">
       <h2>Results</h2>
-      <div id="spinner-results"></div>
+      <div id="spinner" class="spinner"></div>
+      <div id="spinner-results" class="spinner"></div>
     </div>
-    <div id="test"></div>
-    <ul id="results"></ul>
+    <div class="w3-dropdown-click">
+      <button id="dropdown" class="w3-button">
+        <span>Sort By</span>
+        <span class="down-arrow">▼</span>
+      </button>
+      <div id="dropdown-list" class="w3-dropdown-content w3-bar-block">
+        <a id="numAsc" class="dropdown-item">Number Asc</a>
+        <a id="numDesc" class="dropdown-item">Number Desc</a>
+        <a id="dateAsc" class="dropdown-item">Date Asc</a>
+        <a id="dateDesc" class="dropdown-item dropdown-item-last-item"
+          >Date Desc</a
+        >
+      </div>
+    </div>
+    <ul id="past-results"></ul>
     <script src="script.js"></script>
   </body>
 </html>

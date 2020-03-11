@@ -1,114 +1,179 @@
-//Now we start the fun!!!!!
-
-  
-// Displays previous results from server.
-function pastResults() {
-  fetch("http://localhost:5050/getFibonacciResults")
-    .then(response => {
-      return response.json();
-    })
-    .then(data => {
-      let previousLists = [];
-      for (let i = 0; i < data.results.length; i++) {
-        // Creates the tag line for every result printed.
-        let date = new Date(data.results[i].createdDate).toString();
-        previousLists.push(
-          `The fibonacci Of <span class="bold">${data.results[i].number}</span> is <span class="bold">${data.results[i].result}</span>. Calculated at: ${date}`
-        );
-        // Puts each sentence into an <li> in the HTML
-        let resultsSection = document.getElementById("results"); 
-        let newLi = document.createElement("li");
-        newLi.innerHTML = previousLists[i];
-        resultsSection.appendChild(newLi);
-      }
+pastFibbyResults();
+async function pastFibbyResults(sortOrder) {
+  showResultsSpinner();
+  let results = document.getElementById("past-results");
+  results.innerHTML = "";
+  let response = await fetch("http://localhost:5050/getFibonacciResults");
+  let data = await response.json();
+  if (sortOrder === 1) {
+    data.results.sort(function(a, b) {
+      return a.result - b.result;
     });
+  } else if (sortOrder === 2) {
+    data.results.sort(function(a, b) {
+      return b.result - a.result;
+    });
+  } else if (sortOrder === 3) {
+    data.results.sort(function(a, b) {
+      return new Date(a.createdDate) - new Date(b.createdDate);
+    });
+  } else if (sortOrder === 4) {
+    data.results.sort(function(a, b) {
+      return new Date(b.createdDate) - new Date(a.createdDate);
+    });
+  }
+  for (let i = 0; i < 8; i++) {
+    let fibbyOfText = document.createElement("span");
+    fibbyOfText.innerText = "The Fibonacci Of ";
+    let isText = document.createElement("span");
+    isText.innerText = " is ";
+    let calculatedasText = document.createElement("span");
+    let date = new Date(data.results[i].createdDate).toString();
+    calculatedasText.innerText = `. Calculted at ${date}`;
+    let fibbyX = document.createElement("span");
+    fibbyX.className = "bold";
+    fibbyX.innerText = data.results[i].number;
+    let fibbyY = document.createElement("span");
+    fibbyY.className = "bold";
+    fibbyY.innerHTML = data.results[i].result;
+    let newLi = document.createElement("li");
+    newLi.appendChild(fibbyOfText);
+    newLi.appendChild(fibbyX);
+    newLi.appendChild(isText);
+    newLi.appendChild(fibbyY);
+    newLi.appendChild(calculatedasText);
+    let results = document.getElementById("past-results");
+    results.appendChild(newLi);
+  }
+  hideResultsSpinner();
 }
 
-let button = document.getElementById("button");
-button.addEventListener("click", getYFromServer);
+let dropdown = document.getElementById("dropdown");
+dropdown.addEventListener("click", displayDropDownItems);
 
+function displayDropDownItems() {
+  var x = document.getElementById("dropdown-list");
+  if (x.className.indexOf("w3-show") == -1) {
+    x.className += " w3-show";
+  } else {
+    x.className = x.className.replace(" w3-show", "");
+  }
+}
 
-function getYFromServer() {
-  // Main functioning... y(input is defined)
+let numAsc = document.getElementById("numAsc");
+numAsc.addEventListener("click", () => {
+  pastFibbyResults(1);
+});
+
+let numDesc = document.getElementById("numDesc");
+numDesc.addEventListener("click", () => {
+  pastFibbyResults(2);
+});
+
+let dateAsc = document.getElementById("dateAsc");
+dateAsc.addEventListener("click", () => {
+  pastFibbyResults(3);
+});
+
+let dateDesc = document.getElementById("dateDesc");
+dateDesc.addEventListener("click", () => {
+  pastFibbyResults(4);
+});
+
+let calcFibButton = document.getElementById("calcFibby");
+calcFibButton.addEventListener("click", validateNumFromUser);
+
+function validateNumFromUser() {
   hideAlert();
   document.getElementById("y").innerText = "";
-  document.getElementById("fortytooproblem").innerText = "";
-
-  // Start processing of X
+  document.getElementById("fortytooerror").innerText = "";
   showSpinner();
   fibonacciX = document.getElementById("inputField").value;
-  // Num entered by user can't be higher than 50
   if (fibonacciX > 50) {
     let alert = document.getElementById("alert");
     showAlert();
     alert.innerText = "Can't be larger than 50.";
     hideSpinner();
-    // Num entered by user can't be lower than 1
   } else if (fibonacciX < 1) {
     let alert = document.getElementById("alert");
     showAlert();
     alert.innerText = "Can't be less than 1.";
     hideSpinner();
   } else {
-    fetch("http://localhost:5050/fibonacci/" + fibonacciX)
-      .then(response => {
-        // #42 is passed, if compared, it comes back as 400 error, and  Text. Otherwise, we return it as an Object.
-        if (response.status === 400) {
-          hideSpinner();
-          console.log("text");
-          return response.text();
-        } else {
-          console.log("json");
-          return response.json();
-        }
-      })
-      .then(data => {
-        // If the data passed back is acceptable (not 42 or over 50, the fib is displayed....
-        //if not, the display becomes red and presents an error message!)
+    if (document.getElementById("checkBox").checked === true) {
+      calculateFibonacciByServer(fibonacciX);
+    } else {
+      let y = calculateFibonacciLocal(fibonacciX);
+      hideSpinner();
+      document.getElementById("y").innerText = y;
+    }
+  }
 
-        if (typeof data === "object" && data !== null) {
-          let y = data.result;
-          hideSpinner();
-          document.getElementById("y").innerText = y;
-          console.log("JSON");
-        } else {
-          console.log(data);
-          hideSpinner();
-          document.getElementById("fortytooproblem").innerText =
-            "Server Error: " + data;
-          console.log("TEXT");
-        }
-      });
+ 
+
+  function calculateFibonacciLocal(x) {
+
+    if (x === 1 || x === 0) return x;
+    
+    else {
+      return (
+        calculateFibonacciLocal(x - 2) + calculateFibonacciLocal(x - 1)
+      );
+    }
+  }
+
+  async function calculateFibonacciByServer(x) {
+    let response = await fetch("http://localhost:5050/fibonacci/" + x);
+    let data;
+    if (response.status === 400 || response.status === 500) {
+      data = await response.text();
+    } else {
+      data = await response.json();
+    }
+    if (typeof data === "object") {
+      hideSpinner();
+      document.getElementById("y").innerText = data.result;
+      pastFibbyResults();
+    } else {
+      hideSpinner();
+      document.getElementById("fortytooerror").innerText =
+        "Server Error: " + data;
+    }
   }
 }
-// Show the spinner during API request
+
 function showSpinner() {
-  const spinner = document.getElementById("spinner");
-  spinner.className = "show";
+  let spinner = document.getElementById("spinner");
+  spinner.style.display = "inline-block";
   setTimeout(() => {
     spinner.className = spinner.className.replace("show", "");
   }, 8000);
 }
 
-// Hide spinner once API request has completed
 function hideSpinner() {
-  const spinner = document.getElementById("spinner");
-  spinner.className = "";
+  let spinner = document.getElementById("spinner");
+  spinner.style.display = "none";
 }
 
-// Show alert user enters invalid X value into input field
+function showResultsSpinner() {
+  let spinner = document.getElementById("spinner-results");
+  spinner.style.display = "inline-block";
+  setTimeout(() => {
+    spinner.className = spinner.className.replace("show", "");
+  }, 8000);
+}
+
+function hideResultsSpinner() {
+  let spinner = document.getElementById("spinner-results");
+  spinner.style.display = "none";
+}
+
 function showAlert() {
-  const alert = document.getElementById("alert");
-  alert.className = "alert alert danger show";
-  const inputField = document.getElementById("inputField");
-  inputField.className = "formchange-red";
+  let alert = document.getElementById("alert");
+  alert.style.display = "inline-block";
 }
 
-// Hide alert
 function hideAlert() {
-  const alert = document.getElementById("alert");
-  alert.className = "";
-  const inputField = document.getElementById("inputField");
-  inputField.className = "formchange";
+  let alert = document.getElementById("alert");
+  alert.style.display = "none";
 }
-
