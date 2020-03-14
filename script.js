@@ -29,7 +29,7 @@ async function pastFibbyResults(sortOrder) {
     isText.innerText = " is ";
     let calculatedasText = document.createElement("span");
     let date = new Date(data.results[i].createdDate).toString();
-    calculatedasText.innerText = `. Calculted at ${date}`;
+    calculatedasText.innerText = `. Calculated at ${date}`;
     let fibbyX = document.createElement("span");
     fibbyX.className = "bold";
     fibbyX.innerText = data.results[i].number;
